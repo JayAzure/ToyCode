@@ -1,0 +1,76 @@
+package theFirst;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class SingletonPatternToyCode {
+public static void main(String[] args)
+{
+     SingletonClass.GetInstance().CreateFrame();
+     SingletonClass.GetInstance().CreateFrame();
+	}
+}
+
+ class SingletonClass
+{
+	private SingletonClass()
+	{
+		Random random1 = new Random(100);
+		id = random1.nextInt();
+		
+	}
+     public static synchronized SingletonClass GetInstance()
+     { 
+    	 if(_instance == null)
+    	 {
+    		 _instance = new SingletonClass();
+    	 }
+    	 return _instance;
+     }
+     
+     public void CreateFrame()
+     {
+    	 SingletonFrame frame = new SingletonFrame(id);   
+    	 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	 frame.setVisible(true);
+    		Random random1 = new Random(100);
+    		int x = random1.nextInt()%300;
+    		int y=random1.nextInt()%200;
+    	 frame.setLocation(x, y);
+    
+     }
+     private static SingletonClass _instance = null;
+     private int id = 0;
+}
+ 
+
+class SingletonFrame extends JFrame
+{
+    public SingletonFrame(int id)
+    {
+    	this.id = id;
+    	setTitle("Mum's JFrame"+this.id+"end");
+    	setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
+    	
+    	SingletonPanel panel = new SingletonPanel();
+    	add(panel);
+    }
+    private static final int DEFAULT_WIDTH=300;
+    private static final int DEFAULT_HEIGHT=200;
+    private int id = 0;
+}
+
+class SingletonPanel extends JPanel
+{
+    public void paintComponent(Graphics g)
+    {
+    	super.paintComponent(g);
+    	Graphics2D g2 = (Graphics2D)g;
+    	g2.drawString("I was create by SingletonClass", 20, 80);
+    	
+    }
+}
